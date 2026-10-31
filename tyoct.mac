@@ -1,0 +1,38 @@
+;----------------------------------------
+; we use some RT11-macros and the RT11-EMT
+;----------------------------------------
+.mcall  .ttyou
+
+;----------------------------------------
+.macro  meta  m n o p
+.macro  m
+n
+o
+p
+.endm
+.endm
+
+;----------------------------------------
+meta  <push c> <mov c, -(sp)>
+meta  <pop c> <mov (sp)+, c>
+
+;----------------------------------------
+.list   bex    ; list all binaries
+.list   meb    ; show memory translation
+
+;----------------------------------------
+tyoct:  clr   r0
+        push  r1
+        mov#6, r1
+10$:    rol   r5
+        rol   r0
+        add   #'0, r0
+        .ttyou
+        clr   r0
+        rol   r5
+        rol   r0
+        rol   r5
+        rol   r0
+        sob   r1, 10$
+        pop   r1
+        return

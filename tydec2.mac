@@ -1,0 +1,42 @@
+;----------------------------------------
+; we use some RT11-macros and the RT11-EMT
+;----------------------------------------
+.mcall  .ttyou
+
+;----------------------------------------
+.macro  meta  m n o p
+.macro  m
+n
+o
+p
+.endm
+.endm
+
+;----------------------------------------
+meta  <push c> <mov c, -(sp)>
+meta  <pop c> <mov (sp)+, c>
+
+;----------------------------------------
+.list   bex    ; list all binaries
+.list   meb    ; show memory translation
+
+;----------------------------------------
+; print two decimal digits
+;----------------------------------------
+tydec2: push  r1
+        mov   #10., r1
+        call  cvt
+        mov   #1, r1
+        call  cvt
+        pop   r1
+        return
+
+;----------------------------------------
+cvt:    mov   #'0, r0
+10$:    cmp   r5, r1
+        blt   80$
+        sub   r1, r5
+        inc   r0
+        br    10$
+80$:    .ttyou
+        return
